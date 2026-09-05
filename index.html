@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Beauty IA</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, #ffe4ef 0%, transparent 35%),
+                radial-gradient(circle at bottom right, #f6d8e8 0%, transparent 35%),
+                #fff8fb;
+            color: #3f2632;
+            overflow: hidden;
+        }
+
+        /* =========================
+           LAYOUT PRINCIPAL
+        ========================= */
+
+        .app {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 270px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(18px);
+            border-right: 1px solid #f0dce5;
+            padding: 28px 18px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 10px;
+            margin-bottom: 35px;
+        }
+
+        .logo-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #d94f88, #f29abd);
+            color: white;
+            font-size: 23px;
+            box-shadow: 0 8px 20px rgba(217, 79, 136, 0.22);
+        }
+
+        .logo-text h1 {
+            font-size: 20px;
+            color: #8d315d;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            font-size: 11px;
+            color: #a88795;
+        }
+
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #a98b98;
+            padding: 0 12px;
+            margin-bottom: 12px;
+        }
+
+        .categories {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .category {
+            border: none;
+            background: transparent;
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #6f5360;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.2s;
+        }
+
+        .category:hover {
+            background: #fff0f6;
+            color: #b43d70;
+            transform: translateX(3px);
+        }
+
+        .category-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: #fff0f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding: 15px 12px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #fff0f6, #fff8fb);
+            border: 1px solid #f6dce7;
+        }
+
+        .sidebar-bottom strong {
+            display: block;
+            color: #8d315d;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-bottom span {
+            color: #9c7c8a;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           ÁREA DO CHAT
+        ========================= */
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 250, 252, 0.55);
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .topbar {
+            height: 78px;
+            padding: 0 32px;
+            border-bottom: 1px solid #f0dce5;
+            background: rgba(255, 255, 255, 0.68);
+            backdrop-filter: blur(14px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .assistant-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e76b9c, #c83d75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 5px 15px rgba(200, 61, 117, 0.2);
+        }
+
+        .assistant-info h2 {
+            font-size: 16px;
+            color: #512e3e;
+        }
+
+        .online {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #8c7780;
+            margin-top: 2px;
+        }
+
+        .online-dot {
+            width: 7px;
+            height: 7px;
+            background: #56b77a;
+            border-radius: 50%;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 9px;
+        }
+
+        .top-button {
+            border: 1px solid #efd9e3;
+            background: white;
+            color: #82586a;
+            padding: 9px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .top-button:hover {
+            background: #fff0f6;
+            border-color: #e9bfd1;
+            color: #a73668;
+        }
+
+        .top-button.danger:hover {
+            background: #fff1f1;
+            color: #b84a4a;
+            border-color: #edcccc;
+        }
+
+        /* =========================
+           MENSAGENS
+        ========================= */
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 35px 7%;
+            scroll-behavior: smooth;
+        }
+
+        .messages::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: #e9c9d7;
+            border-radius: 10px;
+        }
+
+        .welcome {
+            max-width: 720px;
+            margin: 20px auto 35px;
+            text-align: center;
+        }
+
+        .welcome-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 15px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f4b1c9, #d65b8e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 12px 30px rgba(214, 91, 142, 0.2);
+        }
+
+        .welcome h3 {
+            font-size: 27px;
+            color: #4d2b3b;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #927683;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .message {
+            max-width: 850px;
+            margin: 0 auto 20px;
+            display: flex;
+            gap: 12px;
+            animation: aparecer 0.25s ease;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 11px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .ai .avatar {
+            background: #f8dbe7;
+        }
+
+        .user .avatar {
+            background: #d9578c;
+            color: white;
+            order: 2;
+        }
+
+        .bubble {
+            max-width: 75%;
+            padding: 14px 17px;
+            border-radius: 17px;
+            font-size: 14px;
+            line-height: 1.65;
+            word-wrap: break-word;
+        }
+
+        .ai .bubble {
+            background: white;
+            border: 1px solid #f0dce5;
+            border-top-left-radius: 5px;
+            color: #4f3943;
+            box-shadow: 0 4px 18px rgba(115, 65, 85, 0.05);
+        }
+
+        .user .bubble {
+            background: linear-gradient(135deg, #d9588c, #c84579);
+            color: white;
+            border-top-right-radius: 5px;
+            box-shadow: 0 5px 16px rgba(200, 69, 121, 0.18);
+        }
+
+        .bubble strong {
+            font-weight: 700;
+        }
+
+        .bubble ul,
+        .bubble ol {
+            margin: 8px 0 8px 20px;
+        }
+
+        .bubble li {
+            margin-bottom: 5px;
+        }
+
+        .copy-button {
+            margin-top: 8px;
+            border: none;
+            background: transparent;
+            color: #b17d91;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            color: #b3386d;
+        }
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        .loading {
+            max-width: 850px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #9d7787;
+            font-size: 13px;
+        }
+
+        .loading-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 11px;
+            background: #f8dbe7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .dots span {
+            width: 6px;
+            height: 6px;
+            background: #d9588c;
+            border-radius: 50%;
+            animation: pulso 1.2s infinite;
+        }
+
+        .dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes pulso {
+
+            0%,
+            60%,
+            100% {
+                opacity: 0.3;
+                transform: translateY(0);
+            }
+
+            30% {
+                opacity: 1;
+                transform: translateY(-3px);
+            }
+        }
+
+        /* =========================
+           ÁREA DE INPUT
+        ========================= */
+
+        .input-area {
+            padding: 16px 7px 22px;
+            background: linear-gradient(to top, #fff8fb 75%, transparent);
+        }
+
+        .input-box {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            border: 1px solid #ebd6e0;
+            border-radius: 17px;
+            padding: 7px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 8px 30px rgba(107, 53, 78, 0.08);
+            transition: 0.2s;
+        }
+
+        .input-box:focus-within {
+            border-color: #db8cab;
+            box-shadow: 0 8px 30px rgba(219, 140, 171, 0.14);
+        }
+
+        #mensagem {
+            flex: 1;
+            border: none;
+            outline: none;
+            resize: none;
+            padding: 11px 13px;
+            font-size: 14px;
+            color: #4c3540;
+            background: transparent;
+            min-height: 43px;
+            max-height: 100px;
+        }
+
+        #mensagem::placeholder {
+            color: #b69da8;
+        }
+
+        #botao {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #dc6091, #c54278);
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.2s;
+            box-shadow: 0 5px 14px rgba(197, 66, 120, 0.2);
+        }
+
+        #botao:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 7px 18px rgba(197, 66, 120, 0.28);
+        }
+
+        #botao:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .input-footer {
+            max-width: 850px;
+            margin: 8px auto 0;
+            padding: 0 5px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #ae929e;
+        }
+
+        /* =========================
+           RESPONSIVIDADE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .topbar {
+                padding: 0 17px;
+            }
+
+            .top-button {
+                padding: 8px 10px;
+                font-size: 11px;
+            }
+
+            .messages {
+                padding: 25px 15px;
+            }
+
+            .bubble {
+                max-width: 85%;
+            }
+
+            .welcome h3 {
+                font-size: 23px;
+            }
+
+            .input-area {
+                padding: 12px 12px 18px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .assistant-info h2 {
+                font-size: 14px;
+            }
+
+            .top-button {
+                font-size: 0;
+                width: 38px;
+                height: 38px;
+                padding: 0;
+            }
+
+            .top-button:first-child::before {
+                content: "＋";
+                font-size: 18px;
+            }
+
+            .top-button.danger::before {
+                content: "×";
+                font-size: 20px;
+            }
+
+            .welcome {
+                margin-top: 5px;
+            }
+
+            .welcome-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 25px;
+            }
+
+            .welcome h3 {
+                font-size: 21px;
+            }
+
+            .bubble {
+                max-width: 82%;
+                font-size: 13px;
+            }
+
+            .input-footer {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- =========================
+             BARRA LATERAL
+        ========================== -->
+
+        <aside class="sidebar">
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    ✨
+                </div>
+
+                <div class="logo-text">
+                    <h1>Beauty IA</h1>
+                    <span>Assistente de beleza</span>
+                </div>
+
+            </div>
+
+            <div class="sidebar-title">
+                Categorias
+            </div>
+
+            <div class="categories">
+
+                <button class="category" onclick="usarCategoria('Cabelos')">
+                    <span class="category-icon">💇‍♀️</span>
+                    Cabelos
+                </button>
+
+                <button class="category" onclick="usarCategoria('Skincare')">
+                    <span class="category-icon">🧴</span>
+                    Skincare
+                </button>
+
+                <button class="category" onclick="usarCategoria('Maquiagem')">
+                    <span class="category-icon">💄</span>
+                    Maquiagem
+                </button>
+
+                <button class="category" onclick="usarCategoria('Perfumes')">
+                    <span class="category-icon">🌸</span>
+                    Perfumes
+                </button>
+
+                <button class="category" onclick="usarCategoria('Unhas')">
+                    <span class="category-icon">💅</span>
+                    Unhas
+                </button>
+
+                <button class="category" onclick="usarCategoria('Cuidados corporais')">
+                    <span class="category-icon">🫧</span>
+                    Corpo
+                </button>
+
+            </div>
+
+            <div class="sidebar-bottom">
+
+                <strong>✨ Dica Beauty IA</strong>
+
+                <span>
+                    Conte o que você procura e eu posso ajudar
+                    a encontrar uma rotina ou produto adequado.
+                </span>
+
+            </div>
+
+        </aside>
+
+        <!-- =========================
+             CHAT
+        ========================== -->
+
+        <main class="main">
+
+            <!-- HEADER -->
+
+            <header class="topbar">
+
+                <div class="assistant-info">
+
+                    <div class="status-icon">
+                        ✨
+                    </div>
+
+                    <div>
+                        <h2>Beauty IA</h2>
+
+                        <div class="online">
+                            <span class="online-dot"></span>
+                            Assistente online
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="top-actions">
+
+                    <button class="top-button" onclick="novaConversa()">
+                        ＋ Nova conversa
+                    </button>
+
+                    <button class="top-button danger" onclick="encerrarChat()">
+                        Encerrar
+                    </button>
+
+                </div>
+
+            </header>
+
+            <!-- MENSAGENS -->
+
+            <section class="messages" id="chat">
+
+                <div class="welcome" id="welcome">
+
+                    <div class="welcome-icon">
+                        💗
+                    </div>
+
+                    <h3>Olá! Eu sou a Beauty IA</h3>
+
+                    <p>
+                        Seu assistente virtual de beleza e cosméticos.
+                        Posso ajudar com cabelos, skincare, maquiagem,
+                        perfumes, unhas e cuidados pessoais.
+                    </p>
+
+                </div>
+
+                <div class="message ai">
+
+                    <div class="avatar">
+                        ✨
+                    </div>
+
+                    <div class="bubble">
+                        Oi! 💗 Que bom ter você por aqui.
+                        <br><br>
+                        Me conte o que você está procurando e
+                        vamos encontrar uma solução de beleza juntas!
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- INPUT -->
+
+            <div class="input-area">
+
+                <div class="input-box">
+
+                    <textarea
+                        id="mensagem"
+                        placeholder="Digite sua dúvida sobre beleza..."
+                        rows="1"></textarea>
+
+                    <button id="botao" onclick="enviarMensagem()">
+                        ➤
+                    </button>
+
+                </div>
+
+                <div class="input-footer">
+
+                    <span>
+                        Beauty IA pode cometer erros. Consulte um profissional quando necessário.
+                    </span>
+
+                    <span id="contador">
+                        0 mensagens
+                    </span>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script>
+
+        /* =========================
+           VARIÁVEIS
+        ========================== */
+
+        let messages = [];
+
+        let quantidadeMensagens = 0;
+
+        let chatEncerrado = false;
+
+
+        /* =========================
+           FORMATAÇÃO DA RESPOSTA
+        ========================== */
+
+        function formatarResposta(texto) {
+
+            let seguro = texto
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+
+            seguro = seguro.replace(
+                /\*\*(.*?)\*\*/g,
+                "<strong>$1</strong>"
+            );
+
+            const linhas = seguro.split("\n");
+
+            let resultado = "";
+            let listaAberta = false;
+            let listaNumeradaAberta = false;
+
+            linhas.forEach(linha => {
+
+                const linhaTrim = linha.trim();
+
+                if (!linhaTrim) {
+
+                    if (!listaAberta && !listaNumeradaAberta) {
+                        resultado += "<br>";
+                    }
+
+                    return;
+                }
+
+                if (/^[-•]\s+/.test(linhaTrim)) {
+
+                    if (listaNumeradaAberta) {
+                        resultado += "</ol>";
+                        listaNumeradaAberta = false;
+                    }
+
+                    if (!listaAberta) {
+                        resultado += "<ul>";
+                        listaAberta = true;
+                    }
+
+                    resultado +=
+                        "<li>" +
+                        linhaTrim.replace(/^[-•]\s+/, "") +
+                        "</li>";
+
+                    return;
+                }
+
+                if (/^\d+[\.\)]\s+/.test(linhaTrim)) {
+
+                    if (listaAberta) {
+                        resultado += "</ul>";
+                        listaAberta = false;
+                    }
+
+                    if (!listaNumeradaAberta) {
+                        resultado += "<ol>";
+                        listaNumeradaAberta = true;
+                    }
+
+                    resultado +=
+                        "<li>" +
+                        linhaTrim.replace(/^\d+[\.\)]\s+/, "") +
+                        "</li>";
+
+                    return;
+                }
+
+                if (listaAberta) {
+                    resultado += "</ul>";
+                    listaAberta = false;
+                }
+
+                if (listaNumeradaAberta) {
+                    resultado += "</ol>";
+                    listaNumeradaAberta = false;
+                }
+
+                resultado += linhaTrim + "<br>";
+
+            });
+
+            if (listaAberta) {
+                resultado += "</ul>";
+            }
+
+            if (listaNumeradaAberta) {
+                resultado += "</ol>";
+            }
+
+            return resultado;
+        }
+
+
+        /* =========================
+           ADICIONAR MENSAGEM
+        ========================== */
+
+        function adicionarMensagem(texto, tipo) {
+
+            const chat = document.getElementById("chat");
+
+            const message = document.createElement("div");
+
+            message.className = "message " + tipo;
+
+            const avatar = document.createElement("div");
+
+            avatar.className = "avatar";
+
+            avatar.textContent = tipo === "user" ? "👤" : "✨";
+
+            const bubble = document.createElement("div");
+
+            bubble.className = "bubble";
+
+            if (tipo === "user") {
+
+                bubble.textContent = texto;
+
+            } else {
+
+                bubble.innerHTML =
+                    formatarResposta(texto);
+
+                const copiar =
+                    document.createElement("button");
+
+                copiar.className = "copy-button";
+
+                copiar.textContent =
+                    "📋 Copiar resposta";
+
+                copiar.onclick = function () {
+
+                    navigator.clipboard.writeText(texto);
+
+                    copiar.textContent =
+                        "✓ Copiado!";
+
+                    setTimeout(() => {
+
+                        copiar.textContent =
+                            "📋 Copiar resposta";
+
+                    }, 1500);
+
+                };
+
+                bubble.appendChild(copiar);
+            }
+
+            message.appendChild(avatar);
+
+            message.appendChild(bubble);
+
+            chat.appendChild(message);
+
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+
+        /* =========================
+           LOADING
+        ========================== */
+
+        function mostrarLoading() {
+
+            const chat = document.getElementById("chat");
+
+            const loading =
+                document.createElement("div");
+
+            loading.className = "loading";
+
+            loading.id = "loading";
+
+            loading.innerHTML = `
+
+                <div class="loading-avatar">
+                    ✨
+                </div>
+
+                <span>Beauty IA está pensando</span>
+
+                <div class="dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+            `;
+
+            chat.appendChild(loading);
+
+            chat.scrollTop =
+                chat.scrollHeight;
+        }
+
+
+        function removerLoading() {
+
+            const loading =
+                document.getElementById("loading");
+
+            if (loading) {
+                loading.remove();
+            }
+        }
+
+
+        /* =========================
+           ENVIAR MENSAGEM
+        ========================== */
+
+        async function enviarMensagem() {
+
+            if (chatEncerrado) {
+                return;
+            }
+
+            const input =
+                document.getElementById("mensagem");
+
+            const botao =
+                document.getElementById("botao");
+
+            const mensagem =
+                input.value.trim();
+
+            if (!mensagem) {
+                return;
+            }
+
+            adicionarMensagem(
+                mensagem,
+                "user"
+            );
+
+            messages.push({
+                role: "user",
+                content: mensagem
+            });
+
+            quantidadeMensagens++;
+
+            atualizarContador();
+
+            input.value = "";
+
+            botao.disabled = true;
+
+            input.disabled = true;
+
+            mostrarLoading();
+
+            try {
+
+                const resposta =
+                    await fetch(
+                        "http://localhost:3000/chat",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                mensagem: mensagem,
+
+                                historico: messages
+
+                            })
+                        }
+                    );
+
+                const dados =
+                    await resposta.json();
+
+                removerLoading();
+
+                if (!resposta.ok) {
+
+                    throw new Error(
+                        dados.error ||
+                        "Erro no servidor."
+                    );
+                }
+
+                const respostaIA =
+                    dados.response;
+
+                if (!respostaIA) {
+
+                    throw new Error(
+                        "A IA não retornou uma resposta."
+                    );
+                }
+
+                adicionarMensagem(
+                    respostaIA,
+                    "ai"
+                );
+
+                messages.push({
+                    role: "assistant",
+                    content: respostaIA
+                });
+
+                quantidadeMensagens++;
+
+                atualizarContador();
+
+            } catch (erro) {
+
+                removerLoading();
+
+                console.error(erro);
+
+                adicionarMensagem(
+                    "Desculpe! Não consegui me conectar ao serviço neste momento. Verifique se a API está funcionando e tente novamente.",
+                    "ai"
+                );
+
+            } finally {
+
+                botao.disabled = false;
+
+                input.disabled = false;
+
+                input.focus();
+            }
+        }
+
+
+        /* =========================
+           CONTADOR
+        ========================== */
+
+        function atualizarContador() {
+
+            const contador =
+                document.getElementById("contador");
+
+            contador.textContent =
+                quantidadeMensagens +
+                (quantidadeMensagens === 1
+                    ? " mensagem"
+                    : " mensagens");
+        }
+
+
+        /* =========================
+           NOVA CONVERSA
+        ========================== */
+
+        function novaConversa() {
+
+            messages = [];
+
+            quantidadeMensagens = 0;
+
+            chatEncerrado = false;
+
+            const chat =
+                document.getElementById("chat");
+
+            chat.innerHTML = `
+
+                <div class="welcome">
+
+                    <div class="welcome-icon">
+                        💗
+                    </div>
+
+                    <h3>Nova conversa ✨</h3>
+
+                    <p>
+                        Estou pronta para ajudar.
+                        O que você gostaria de saber
+                        sobre beleza hoje?
+                    </p>
+
+                </div>
+
+                <div class="message ai">
+
+                    <div class="avatar">
+                        ✨
+                    </div>
+
+                    <div class="bubble">
+                        Oi novamente! 💗
+                        <br><br>
+                        Pode me contar sua dúvida.
+                    </div>
+
+                </div>
+            `;
+
+            const input =
+                document.getElementById("mensagem");
+
+            const botao =
+                document.getElementById("botao");
+
+            input.disabled = false;
+
+            botao.disabled = false;
+
+            atualizarContador();
+
+            input.focus();
+        }
+
+
+        /* =========================
+           ENCERRAR CHAT
+        ========================== */
+
+        function encerrarChat() {
+
+            if (chatEncerrado) {
+                return;
+            }
+
+            chatEncerrado = true;
+
+            const input =
+                document.getElementById("mensagem");
+
+            const botao =
+                document.getElementById("botao");
+
+            input.disabled = true;
+
+            botao.disabled = true;
+
+            adicionarMensagem(
+                "Conversa encerrada. 💗 Quando quiser começar novamente, clique em “Nova conversa”.",
+                "ai"
+            );
+        }
+
+
+        /* =========================
+           CATEGORIAS
+        ========================== */
+
+        function usarCategoria(categoria) {
+
+            if (chatEncerrado) {
+                return;
+            }
+
+            const input =
+                document.getElementById("mensagem");
+
+            input.value =
+                "Quero ajuda com " +
+                categoria.toLowerCase() +
+                ". ";
+
+            input.focus();
+        }
+
+
+        /* =========================
+           ENTER PARA ENVIAR
+        ========================== */
+
+        document
+            .getElementById("mensagem")
+            .addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key === "Enter" &&
+                        !event.shiftKey
+                    ) {
+
+                        event.preventDefault();
+
+                        enviarMensagem();
+                    }
+
+                }
+            );
+
+    </script>
+
+</body>
+
+</html>
